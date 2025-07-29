@@ -380,3 +380,40 @@ public class ApiController {
 `@RestController` = `@Controller` + `@ResponseBody` sur chaque méthode
 
 Pour une application hybride (à la fois MVC et API), vous pouvez utiliser les deux annotations dans le même projet
+
+---
+
+### 14. Quand utiliser @RequestMapping, @GetMapping, @PostMapping, etc. ?
+**Réponse :**
+
+| Annotation       | Equivalent à                     | Usage typique                              | Méthode HTTP |
+|------------------|----------------------------------|--------------------------------------------|-------------|
+| `@RequestMapping` | La plus générique                | `@RequestMapping("/path")`                 | Toutes (GET par défaut) |
+| `@GetMapping`    | `@RequestMapping(method=GET)`    | Lire des données                           | GET         |
+| `@PostMapping`   | `@RequestMapping(method=POST)`   | Créer des ressources                       | POST        |
+| `@PutMapping`    | `@RequestMapping(method=PUT)`    | Mettre à jour complètement une ressource   | PUT         |
+| `@DeleteMapping` | `@RequestMapping(method=DELETE)` | Supprimer une ressource                    | DELETE      |
+| `@PatchMapping`  | `@RequestMapping(method=PATCH)`  | Mettre à jour partiellement                | PATCH       |
+
+#### Bonnes pratiques :
+**Préférez les annotations spécifiques** (`@GetMapping`, `@PostMapping`) pour plus de clarté  
+** Utilisez `@RequestMapping` seulement pour :**
+   - Définir un préfixe commun à plusieurs méthodes  
+   - Des cas nécessitant plusieurs méthodes HTTP  
+
+**Exemple d'usage :**
+```java
+@RestController
+@RequestMapping("/api/users")  // Préfixe commun
+public class UserController {
+
+    @GetMapping  // GET /api/users
+    public List<User> getAllUsers() { ... }
+
+    @PostMapping // POST /api/users
+    public User createUser(@RequestBody User user) { ... }
+	
+	@RequestMapping(value = "/special", method = {GET, POST}) // Cas mixte
+    public String specialHandler() { ... }
+}
+```
