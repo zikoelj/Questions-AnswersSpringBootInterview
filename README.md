@@ -434,13 +434,16 @@ public User getUser(@PathVariable Long id) {
 @GetMapping("/search")
 public List<User> searchUsers(@RequestParam String name) {
     // Ex: /search?name=John → name = "John"
-}```
+}
+```
 ### 3. Corps de requête (Request Body)
+
 ```java
 @PostMapping("/users")
 public User createUser(@RequestBody User user) {
     // Reçoit un objet JSON dans le body
-}```
+}
+```
 ***Règles clés :***
 
 - `@RequestBody` : Uniquement pour le corps des requêtes (POST/PUT)
