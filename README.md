@@ -416,4 +416,56 @@ public class UserController {
 	@RequestMapping(value = "/special", method = {GET, POST}) // Cas mixte
     public String specialHandler() { ... }
 }
+
 ```
+
+### 15. Comment gérer les paramètres de requête et les variables de chemin ?
+**Réponse :**
+
+#### 1. Variables de chemin (Path Variables)
+```java
+@GetMapping("/users/{id}")
+public User getUser(@PathVariable Long id) {
+    // Ex: /users/42 → id = 42
+}
+```
+### 2. Paramètres de requête (Query Parameters)
+```java
+@GetMapping("/search")
+public List<User> searchUsers(@RequestParam String name) {
+    // Ex: /search?name=John → name = "John"
+}```
+### 3. Corps de requête (Request Body)
+```java
+@PostMapping("/users")
+public User createUser(@RequestBody User user) {
+    // Reçoit un objet JSON dans le body
+}```
+***Règles clés :***
+
+- `@RequestBody` : Uniquement pour le corps des requêtes (POST/PUT)
+- `@RequestParam` : Paramètres après le ? dans l'URL
+- `@PathVariable` : Segments du chemin d'URL
+
+***Exemple complet :***
+
+```java
+@GetMapping("/products/{category}")
+public List<Product> getProducts(
+    @PathVariable String category,      // /products/electronics
+    @RequestParam(required = false) String sort, // ?sort=price
+    @RequestParam(defaultValue = "10") int limit // ?limit=20
+) { ... }
+```
+**Bonnes pratiques :**
+- required = false pour les paramètres optionnels
+- defaultValue pour les valeurs par défaut
+- Validez avec `@Valid` + annotations de validation (ex: `@Size`, `@NotNull`)
+
+**Annotations de validation utiles :**
+
+- `@NotNull`, `@Size(min=1, max=10)`
+
+- `@Email`, `@Pattern(regexp = "...")`
+
+- `@Min`, `@Max` pour les nombres
