@@ -422,7 +422,7 @@ public class UserController {
 ### 15. Comment gérer les paramètres de requête et les variables de chemin ?
 **Réponse :**
 
-#### 1. Variables de chemin (Path Variables)
+### 1. Variables de chemin (Path Variables)
 ```java
 @GetMapping("/users/{id}")
 public User getUser(@PathVariable Long id) {
@@ -461,7 +461,7 @@ public List<Product> getProducts(
 ) { ... }
 ```
 **Bonnes pratiques :**
-- required = false pour les paramètres optionnels
+- `required = false` pour les paramètres optionnels
 - defaultValue pour les valeurs par défaut
 - Validez avec `@Valid` + annotations de validation (ex: `@Size`, `@NotNull`)
 
