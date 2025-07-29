@@ -397,7 +397,7 @@ Pour une application hybride (à la fois MVC et API), vous pouvez utiliser les d
 
 #### Bonnes pratiques :
 **Préférez les annotations spécifiques** (`@GetMapping`, `@PostMapping`) pour plus de clarté  
-** Utilisez `@RequestMapping` seulement pour :**
+**Utilisez `@RequestMapping` seulement pour :**
    - Définir un préfixe commun à plusieurs méthodes  
    - Des cas nécessitant plusieurs méthodes HTTP  
 
