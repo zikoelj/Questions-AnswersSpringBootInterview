@@ -462,7 +462,7 @@ public List<Product> getProducts(
 ```
 **Bonnes pratiques :**
 - `required = false` pour les paramètres optionnels
-- defaultValue pour les valeurs par défaut
+- `defaultValue` pour les valeurs par défaut
 - Validez avec `@Valid` + annotations de validation (ex: `@Size`, `@NotNull`)
 
 **Annotations de validation utiles :**
@@ -472,3 +472,55 @@ public List<Product> getProducts(
 - `@Email`, `@Pattern(regexp = "...")`
 
 - `@Min`, `@Max` pour les nombres
+
+---
+
+### 16. Comment retourner des données JSON avec Spring Boot ?
+**Réponse :**
+
+#### Fonctionnement automatique :
+- Grâce à **Jackson** (intégré par défaut via `spring-boot-starter-web`)
+- Conversion automatique des objets Java ↔ JSON
+- Nécessite soit :
+  - Un contrôleur annoté `@RestController` (contient `@ResponseBody` implicitement)
+  - Ou l'annotation `@ResponseBody` sur une méthode
+
+#### Exemple de base :
+```java
+@RestController
+public class UserController {
+    
+    @GetMapping("/user")
+    public User getUser() {
+        return new User("John", 30); // → {"name":"John","age":30}
+    }
+}
+```
+#### Personnalisation du JSON (annotations Jackson) :
+```java
+public class User {
+    @JsonProperty("user_name")  // Renomme le champ dans le JSON
+    private String name;
+    
+    @JsonIgnore  // Exclut le champ du JSON
+    private String password;
+    
+    @JsonFormat(pattern="dd/MM/yyyy")  // Format de date
+    private LocalDate birthDate;
+}
+```
+#### Bon à savoir :
+-- Spring Boot supporte aussi XML (si activé via HttpMessageConverter)
+-- La conversion se fait via HttpMessageConverters (Jackson par défaut pour JSON)
+-- Configuration possible dans application.properties :
+```java
+spring.jackson.date-format=yyyy-MM-dd
+spring.jackson.serialization.WRITE_DATES_AS_TIMESTAMPS=false
+```
+#### Gestion avancée :
+-- Créer des DTOs spécifiques pour le JSON
+-- Utiliser @JsonView pour contrôler les champs exposés
+-- Gérer les collections : List<User> → tableau JSON automatique
+
+---
+
