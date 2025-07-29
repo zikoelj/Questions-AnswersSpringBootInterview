@@ -293,3 +293,51 @@ public class ReportService {
 - Pour les cas complexes, envisagez @Primary à la place
 
 ---
+
+### 12. Quels sont les différents scopes dans Spring ?
+**Réponse :**
+
+#### Scopes Spring Principaux
+
+**Singleton (par défaut) :**
+- Une seule instance partagée dans tout l'application
+- Idéal pour :
+  - Services sans état (stateless)
+  - Composants coûteux à instancier
+- Exemple : `@Service` classique
+
+**Prototype :**
+- Nouvelle instance à chaque injection/demande
+- Idéal pour :
+  - Objets avec état (stateful)
+  - Quand la mutabilité est nécessaire
+- Exemple : `@Scope("prototype")`
+
+#### Scopes Web (disponibles dans les applications web) :
+- **Request** : Une instance par requête HTTP
+- **Session** : Une instance par session utilisateur
+- **Application** : Une instance par contexte Servlet
+- **WebSocket** : Une instance par connexion WebSocket
+
+#### Exemple d'utilisation :
+```java
+@Service
+@Scope("prototype") // Crée une nouvelle instance à chaque injection
+public class PrototypeService { ... }
+
+@RestController
+public class MyController {
+    @Autowired // Toujours la même instance
+    private SingletonService singletonService;
+    
+    @Autowired // Nouvelle instance à chaque injection
+    private PrototypeService prototypeService;
+}
+```
+**Bonnes Pratiques :**
+- Le singleton est le scope le plus performant (moins d'instances)
+- Le prototype est plus sûr pour les objets mutables
+- Pour les applications web, privilégiez les scopes web quand approprié
+
+---
+
