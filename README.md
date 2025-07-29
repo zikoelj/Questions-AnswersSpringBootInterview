@@ -341,3 +341,42 @@ public class MyController {
 
 ---
 
+## 🔹 API REST & couche Web
+
+### 13. Différences entre @RestController et @Controller ?
+**Réponse :**
+
+| **@Controller**                     | **@RestController**                |
+|-------------------------------------|------------------------------------|
+| Pour applications MVC traditionnelles (backend + templates) | Pour applications REST/API (backend séparé du front) |
+| Retourne des noms de vues (HTML)    | Retourne directement des données (JSON/XML) |
+| Utilise des moteurs de templates : Thymeleaf, JSP, Freemarker | Communique via HTTP avec React/Angular/autres clients |
+| Nécessite `@ResponseBody` pour retourner du JSON | Combine `@Controller` + `@ResponseBody` automatiquement |
+
+#### Exemples concrets :
+**Avec @Controller (MVC) :**
+```java
+@Controller
+public class WebController {
+    @GetMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("message", "Bonjour");
+        return "home"; // Renvoie home.html (Thymeleaf/JSP)
+    }
+}
+```
+***Avec @RestController (API) :***
+```java
+@RestController
+public class ApiController {
+    @GetMapping("/api/data")
+    public Data getData() {
+        return new Data(...); // Renvoyé directement en JSON
+    }
+}
+```
+**Bon à savoir :**
+
+`@RestController` = `@Controller` + `@ResponseBody` sur chaque méthode
+
+Pour une application hybride (à la fois MVC et API), vous pouvez utiliser les deux annotations dans le même projet.
