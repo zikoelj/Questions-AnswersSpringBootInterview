@@ -223,9 +223,8 @@ public class UserService {
     @PreDestroy
     public void cleanup() { System.out.println("Nettoyage..."); }
 }
-```
 
----
+```
 
 ### 10. Différence entre @Bean et @Component ?
 **Réponse :**  
@@ -254,3 +253,43 @@ public class UserService { ... }
 
 - `@Bean` → Configuration manuelle dans une classe @Configuration.
 - `@Component` → Détection automatique par Spring.
+
+---
+
+### 11. À quoi servent @Autowired et @Qualifier ?
+**Réponse :**
+
+#### @Autowired
+- Permet l'injection automatique de dépendances par Spring
+- Peut être utilisé sur :
+  - Les champs (field injection)
+  - Les constructeurs (✔️ recommandé)
+  - Les setters
+
+#### @Qualifier
+- Résout les ambiguïtés quand plusieurs beans du même type existent
+- Permet de spécifier quel bean exactement doit être injecté
+
+#### Exemple combiné :
+```java
+@Component
+@Qualifier("pdfReport")
+public class PdfReportGenerator implements ReportGenerator {...}
+
+@Component
+@Qualifier("excelReport")
+public class ExcelReportGenerator implements ReportGenerator {...}
+
+@Service
+public class ReportService {
+    @Autowired
+    @Qualifier("pdfReport")  // Injection spécifique
+    private ReportGenerator reportGenerator;
+}
+```
+**Bonnes pratiques :**
+- Préférez l'injection par constructeur pour les dépendances obligatoires
+- Utilisez @Qualifier pour les cas d'ambiguïté
+- Pour les cas complexes, envisagez @Primary à la place
+
+---
