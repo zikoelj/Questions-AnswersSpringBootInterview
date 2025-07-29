@@ -379,4 +379,4 @@ public class ApiController {
 
 `@RestController` = `@Controller` + `@ResponseBody` sur chaque méthode
 
-Pour une application hybride (à la fois MVC et API), vous pouvez utiliser les deux annotations dans le même projet.
+Pour une application hybride (à la fois MVC et API), vous pouvez utiliser les deux annotations dans le même projet
