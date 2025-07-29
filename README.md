@@ -510,17 +510,17 @@ public class User {
 }
 ```
 #### Bon à savoir :
--- Spring Boot supporte aussi XML (si activé via HttpMessageConverter)
--- La conversion se fait via HttpMessageConverters (Jackson par défaut pour JSON)
--- Configuration possible dans application.properties :
+- Spring Boot supporte aussi XML (si activé via HttpMessageConverter)
+- La conversion se fait via HttpMessageConverters (Jackson par défaut pour JSON)
+- Configuration possible dans application.properties :
 ```java
 spring.jackson.date-format=yyyy-MM-dd
 spring.jackson.serialization.WRITE_DATES_AS_TIMESTAMPS=false
 ```
 #### Gestion avancée :
--- Créer des DTOs spécifiques pour le JSON
--- Utiliser @JsonView pour contrôler les champs exposés
--- Gérer les collections : List<User> → tableau JSON automatique
+- Créer des DTOs spécifiques pour le JSON
+- Utiliser @JsonView pour contrôler les champs exposés
+- Gérer les collections : List<User> → tableau JSON automatique
 
 ---
 
