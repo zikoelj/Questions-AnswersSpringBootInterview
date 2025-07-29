@@ -227,7 +227,7 @@ public class UserService {
 
 ---
 
-### 9. Différence entre @Bean et @Component ?
+### 10. Différence entre @Bean et @Component ?
 **Réponse :**  
 
 | **@Bean**                          | **@Component**                     |
@@ -236,3 +236,21 @@ public class UserService {
 | Déclare un bean via une méthode (ex : configurer un bean externe comme `DataSource`) | Transforme la classe elle-même en bean (ex : `@Service`, `@Repository`) |
 | Flexible : Permet de personnaliser l'instanciation (ex : `@Bean public DataSource ds() { ... }`) | Automatique : Spring crée le bean via le constructeur par défaut |
 | Cas d'usage : Intégration de librairies externes (ex : Redis, Kafka) | Cas d'usage : Composants métiers (services, repositories) |
+
+**Exemple :**
+```java
+@Configuration  
+public class AppConfig {  
+    @Bean // Bean personnalisé  
+    public DataSource dataSource() {  
+        return new HikariDataSource();  
+    }  
+}  
+
+@Component // Bean automatique  
+public class UserService { ... }
+```
+**Résumé :**
+
+- `@Bean` → Configuration manuelle dans une classe @Configuration.
+- `@Component` → Détection automatique par Spring.
