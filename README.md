@@ -524,3 +524,47 @@ spring.jackson.serialization.WRITE_DATES_AS_TIMESTAMPS=false
 
 ---
 
+### 17. Validation des données dans Spring Boot
+#### Annotation clé : `@Valid`
+
+- Active la validation sur un objet reçu dans le corps de la requête
+
+#### Exemple :
+
+```java
+@PostMapping("/users")
+public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    // Le user est validé automatiquement avant d'arriver ici
+}
+```
+- Annotations de validation standard (jakarta.validation)
+
+```java
+public class User {
+    @NotBlank
+    private String name;
+    
+    @Email
+    private String email;
+    
+    @Min(18)
+    private int age;
+}
+```
+***Gestion des erreurs***
+
+- Spring retourne automatiquement un 400 Bad Request si la validation échoue
+- Format d'erreur standard :
+
+```json
+{
+  "timestamp": "2023-05-20T12:34:56",
+  "status": 400,
+  "errors": ["Le champ email doit être une adresse valide"]
+}
+```
+***Bonnes pratiques :***
+
+- Combinez avec `@RestControllerAdvice` pour personnaliser les messages d'erreur
+- Utilisez des DTOs spécifiques plutôt que vos entités JPA pour la validation
+- Pour les validations complexes, implémentez `ConstraintValidator`
