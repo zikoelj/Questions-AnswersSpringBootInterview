@@ -619,3 +619,23 @@ public class GlobalExceptionHandler {
 
 ---
 
+### 19. Comment utiliser @ControllerAdvice pour la gestion globale des exceptions ?
+
+- L’annotation `@ExceptionHandler` est utilisée dans Spring pour gérer des exceptions spécifiques de manière centralisée ou locale.
+- Elle peut être placée :
+	- dans un contrôleur (`@RestController`) pour capturer les exceptions levées par ses propres méthodes, ou
+	- dans une classe annotée avec `@ControllerAdvice` ou `@RestControllerAdvice` pour une gestion globale des exceptions dans toute l’application.
+
+- Par exemple :
+```java
+@ExceptionHandler(ResourceNotFoundException.class)
+public ResponseEntity<String> handleResourceNotFound(ResourceNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+}
+```
+- Quand une `ResourceNotFoundException` est levée, Spring va chercher automatiquement une méthode avec `@ExceptionHandler(ResourceNotFoundException.class)` pour gérer cette exception.
+
+**Points importants à dire à l’oral :**
+- Permet de mapper une exception vers une réponse HTTP personnalisée.
+- Peut être utilisée dans une méthode d’un contrôleur ou dans une classe globale annotée avec `@RestControllerAdvice`.
+- La méthode peut retourner un `ResponseEntity`, une vue, ou même un objet JSON selon les besoins.
