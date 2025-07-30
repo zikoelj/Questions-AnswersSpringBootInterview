@@ -570,6 +570,7 @@ public class User {
 - Pour les validations complexes, implémentez `ConstraintValidator`
 
 ---
+## 🔹 Gestion des exceptions
 
 ### 18. Utilisation de @ControllerAdvice pour la gestion globale des exceptions
 **Rôle principal :**
