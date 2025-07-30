@@ -568,3 +568,53 @@ public class User {
 - Combinez avec `@RestControllerAdvice` pour personnaliser les messages d'erreur
 - Utilisez des DTOs spécifiques plutôt que vos entités JPA pour la validation
 - Pour les validations complexes, implémentez `ConstraintValidator`
+
+---
+
+### 18. Utilisation de @ControllerAdvice pour la gestion globale des exceptions
+**Rôle principal :**
+
+- Centralise le traitement des exceptions pour tous les contrôleurs
+- Évite la duplication du code de gestion d'erreurs 
+
+I**mplémentation de base :**
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+    
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse("NOT_FOUND", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex) {
+        ErrorResponse error = new ErrorResponse("INTERNAL_ERROR", "Une erreur est survenue");
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+```
+**Composants clés :**
+
+- `@ExceptionHandler` : Définit quelle méthode gère quel type d'exception
+- `ResponseEntity` : Permet de contrôler le statut HTTP et le corps de la réponse
+- Classe d'erreur personnalisée (ici ErrorResponse)
+
+**Avantages :**
+
+- Retourne des réponses d'erreur cohérentes dans tout l'API
+- Séparation claire entre la logique métier et la gestion des erreurs
+- Personnalisation fine des codes HTTP et messages d'erreur
+
+**Exemple de réponse JSON :**
+```json
+{
+  "code": "NOT_FOUND",
+  "message": "L'utilisateur demandé n'existe pas"
+}
+```
+
+---
+
