@@ -668,7 +668,7 @@ public class ResourceNotFoundException extends RuntimeException {
 ----
 
 ## 🔹 Profils, tests et utilitaires
-### Pouvez-vous expliquer ce que sont les Spring Profiles et pourquoi on les utilise ?
+### 21. Pouvez-vous expliquer ce que sont les Spring Profiles et pourquoi on les utilise ?
 
 - Les Spring Profiles permettent de définir des configurations spécifiques à un environnement (par exemple : dev, test, prod).
 - Grâce à eux, on peut activer ou désactiver des beans, des fichiers de configuration ou des comportements en fonction de l’environnement dans lequel l’application tourne.
