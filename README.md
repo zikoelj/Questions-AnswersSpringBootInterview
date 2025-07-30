@@ -639,3 +639,31 @@ public ResponseEntity<String> handleResourceNotFound(ResourceNotFoundException e
 - Permet de mapper une exception vers une réponse HTTP personnalisée.
 - Peut être utilisée dans une méthode d’un contrôleur ou dans une classe globale annotée avec `@RestControllerAdvice`.
 - La méthode peut retourner un `ResponseEntity`, une vue, ou même un objet JSON selon les besoins.
+
+---
+
+### 20. Quelles sont les bonnes pratiques pour créer des exceptions personnalisées dans une application Spring Boot ?
+
+- Pour créer des exceptions personnalisées dans une application Spring Boot, voici les bonnes pratiques :
+
+1. Créer une classe d’exception dédiée, qui hérite de `RuntimeException` ou d’une autre exception adaptée.
+
+```java
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}
+```
+2. Organiser ces classes dans un package spécifique, comme `com.example.exception`, pour plus de clarté.
+
+3. Gérer ces exceptions avec `@ExceptionHandler`, soit :
+
+	- localement dans un contrôleur ;
+
+	- soit globalement dans une classe annotée avec `@RestControllerAdvice`.
+
+4. Toujours retourner une réponse claire (statut HTTP + message d’erreur) pour améliorer l’expérience client/API.
+
+----
+
