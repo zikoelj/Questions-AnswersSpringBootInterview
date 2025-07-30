@@ -715,7 +715,7 @@ spring.profiles.active=dev
 	
 	- `ApplicationRunner` reçoit un objet de type `ApplicationArguments`, qui permet une meilleure gestion des arguments.
 
-** Exemple :**
+**Exemple :**
 
 ```java
 @Component
@@ -731,3 +731,112 @@ public class MyRunner implements CommandLineRunner {
 
 ----
 
+### 23. À quoi sert l’annotation @SpringBootTest dans Spring Boot ?
+
+- L’annotation `@SpringBootTest` est utilisée pour écrire des tests d’intégration dans une application Spring Boot.
+
+- Elle permet de charger tout le contexte Spring (comme au démarrage réel de l’application), afin que les tests puissent :
+	- accéder aux beans,
+	- tester les couches ensemble (service + repository, ou contrôleur + service, etc.),
+	- simuler le comportement global de l’application.
+
+**Exemple :**
+```java
+@SpringBootTest
+public class UserServiceTest {
+
+    @Autowired
+    private UserService userService;
+
+    @Test
+    public void testFindUser() {
+        User user = userService.findById(1L);
+        assertNotNull(user);
+    }
+}
+```
+
+**⚠️ Attention :**
+- `@SpringBootTest` est plus lourd que les tests unitaires, car il démarre tout le contexte Spring.
+
+- Pour tester uniquement une couche, on peut utiliser des annotations plus ciblées comme :
+	- `@WebMvcTest` pour les contrôleurs,
+	- `@DataJpaTest` pour les repositories.
+
+**À dire à l’oral :**
+`@SpringBootTest` est utilisé pour les tests d’intégration. Il démarre tout le contexte Spring pour simuler une application réelle et tester l’interaction entre les différentes couches.
+
+---
+
+### 24. Comment écrire des tests unitaires ou d’intégration pour des contrôleurs REST dans Spring Boot ?
+
+- Pour tester des contrôleurs REST dans Spring Boot, on utilise principalement `@WebMvcTest` pour faire des tests unitaires ciblés sur la couche web, sans charger tout le contexte de 	l’application.
+
+```java
+@WebMvcTest(UserController.class)
+public class UserControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UserService userService;
+
+    @Test
+    public void testGetUserById() throws Exception {
+        Mockito.when(userService.getUser(1L))
+               .thenReturn(new User(1L, "Alice"));
+
+        mockMvc.perform(get("/users/1"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.name").value("Alice"));
+    }
+}
+```
+ **Détails importants :**
+- `@WebMvcTest` ne charge que la couche contrôleur (et les filtres liés au web).
+- `MockMvc` est utilisé pour simuler des requêtes HTTP sans démarrer le serveur.
+- Les dépendances comme UserService sont mockées avec `@MockBean`.
+
+**Si on veut tester l’intégration complète (REST + service + base de données) :**
+- On utilise `@SpringBootTest` avec `MockMvc` ou `TestRestTemplate`. 
+
+**Résumé à dire à l’oral :**
+> - On utilise `@WebMvcTest` avec `MockMvc` pour tester les contrôleurs REST de manière isolée. Cela permet de simuler des requêtes HTTP et de vérifier les réponses, sans charger tout 	le contexte Spring. Pour des tests d’intégration complets, on préfère `@SpringBootTest`.
+
+----
+
+### 25. Comment configurer et connecter une base de données dans Spring Boot ?
+
+- Pour configurer et connecter une base de données dans Spring Boot, voici les étapes principales :
+
+1. Ajouter la dépendance JDBC ou le driver spécifique à la base de données dans le `pom.xml `. Par exemple pour MySQL :
+
+```xml
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+2. Configurer les paramètres de connexion dans le fichier `application.properties` ou `application.yml`, comme :
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/ma_base
+spring.datasource.username=mon_user
+spring.datasource.password=mon_password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+```
+3. Configurer le comportement de la création de la base et des tables via la propriété `spring.jpa.hibernate.ddl-auto` (si JPA/Hibernate est utilisé) :
+	- create : crée la base à chaque démarrage (efface tout)
+	- update : met à jour le schéma sans perte de données
+	- validate : vérifie seulement que le schéma correspond
+	- none : ne fait rien
+
+```properties
+spring.jpa.hibernate.ddl-auto=update
+```
+4. ***Optionnel*** : configurer le pool de connexions, le dialecte SQL, etc.
+
+**Résumé à dire à l’oral :**
+> - Pour connecter une base de données dans Spring Boot, on ajoute la dépendance du driver dans le projet, puis on configure l’URL, le nom d’utilisateur, le mot de passe et d’autres 		paramètres dans `application.properties`. On peut aussi définir comment Hibernate doit gérer la création ou la mise à jour des tables avec la propriété 				`spring.jpa.hibernate.ddl-auto.`
