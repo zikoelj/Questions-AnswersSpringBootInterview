@@ -701,7 +701,33 @@ public DataSource devDataSource() { ... }
 spring.profiles.active=dev
 ```
 **Résumé à dire à l’oral :**
-> Les Spring Profiles sont utilisés pour gérer des configurations différentes selon les environnements (comme dev, test, prod). Cela permet d’avoir un comportement ou des beans adaptés sans modifier le code.
+> - Les Spring Profiles sont utilisés pour gérer des configurations différentes selon les environnements (comme dev, test, prod). Cela permet d’avoir un comportement ou des beans adaptés sans modifier le code.
 
 ---
+
+### 22. À quoi servent CommandLineRunner et ApplicationRunner dans Spring Boot ?
+
+- `CommandLineRunner` et `ApplicationRunner` sont deux interfaces de Spring Boot qui permettent d’exécuter du code automatiquement après le démarrage complet de l'application.
+
+- La différence entre les deux :
+
+	- `CommandLineRunner` reçoit un tableau de chaînes de caractères `(String[] args)` comme arguments.
+	
+	- `ApplicationRunner` reçoit un objet de type `ApplicationArguments`, qui permet une meilleure gestion des arguments.
+
+** Exemple :**
+
+```java
+@Component
+public class MyRunner implements CommandLineRunner {
+    @Override
+    public void run(String... args) {
+        System.out.println("Application démarrée !");
+    }
+}
+```
+**Résumé simple pour un oral :**
+> - Ce sont des interfaces utilisées pour exécuter du code juste après le démarrage de l’application Spring Boot. On les utilise souvent pour initialiser des données ou vérifier des 		paramètres au lancement.
+
+----
 
