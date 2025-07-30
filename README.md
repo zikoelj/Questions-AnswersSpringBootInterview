@@ -667,3 +667,41 @@ public class ResourceNotFoundException extends RuntimeException {
 
 ----
 
+## 🔹 Profils, tests et utilitaires
+### Pouvez-vous expliquer ce que sont les Spring Profiles et pourquoi on les utilise ?
+
+- Les Spring Profiles permettent de définir des configurations spécifiques à un environnement (par exemple : dev, test, prod).
+- Grâce à eux, on peut activer ou désactiver des beans, des fichiers de configuration ou des comportements en fonction de l’environnement dans lequel l’application tourne.
+
+**Exemple courant :**
+
+```yml
+# application-dev.yml
+server.port: 8081
+
+# application-prod.yml
+server.port: 8080
+```
+**Et dans le code :**
+
+```java
+@Profile("dev")
+@Bean
+public DataSource devDataSource() { ... }
+```
+**Pour activer un profil :**
+
+```bash
+
+-Dspring.profiles.active=dev
+```
+**ou dans application.properties :**
+
+```properties
+spring.profiles.active=dev
+```
+**Résumé à dire à l’oral :**
+> Les Spring Profiles sont utilisés pour gérer des configurations différentes selon les environnements (comme dev, test, prod). Cela permet d’avoir un comportement ou des beans adaptés sans modifier le code.
+
+---
+
